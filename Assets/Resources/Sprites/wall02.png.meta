@@ -1,12 +1,12 @@
 fileFormatVersion: 2
-guid: 00a5a0761f9132c4ca9450039f1f6d85
-timeCreated: 1553885180
+guid: c3b9ded74932632498772c215755932a
+timeCreated: 1553885890
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
   serializedVersion: 4
   mipmaps:
-    mipMapMode: 1
+    mipMapMode: 0
     enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
@@ -28,7 +28,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: 0
-    aniso: 16
+    aniso: -1
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -43,7 +43,7 @@ TextureImporter:
   spritePixelsToUnits: 10
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: 0
+  spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
   maxTextureSizeSet: 0
@@ -93,31 +93,7 @@ TextureImporter:
   spriteSheet:
     serializedVersion: 2
     sprites: []
-    outline:
-    - - {x: -3, y: 3}
-      - {x: -3, y: 1}
-      - {x: -4, y: 1}
-      - {x: -4, y: 0}
-      - {x: -3, y: -0.0948782}
-      - {x: -3, y: -2}
-      - {x: -2, y: -2}
-      - {x: -2, y: -4}
-      - {x: -1, y: -4}
-      - {x: -1, y: -2}
-      - {x: 1, y: -2}
-      - {x: 1, y: -4}
-      - {x: 2, y: -4}
-      - {x: 2, y: -2}
-      - {x: 3, y: -2}
-      - {x: 3, y: -1}
-      - {x: 4, y: -1}
-      - {x: 4, y: 0}
-      - {x: 3, y: 0}
-      - {x: 3, y: 3}
-      - {x: 2, y: 3}
-      - {x: 2, y: 4}
-      - {x: -2, y: 4}
-      - {x: -2, y: 3}
+    outline: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

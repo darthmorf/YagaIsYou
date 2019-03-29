@@ -5,18 +5,45 @@ using UnityEngine;
 
 public class Entity
 {
-    public bool move = true;
-    public bool player = false;
-    public GameObject go;
-    public Vector2 destination;
-    public float speed = 6f;
+    public enum type
+    {
+        Yaga, WallH, WallV
+    };
 
-    public Entity(string entityName, string spriteFile)
+    public bool move = true;
+    public GameObject go;
+    public Vector2 dest;
+    public Vector2 pos { get { return go.transform.position; } set { go.transform.position = value; } }
+    public float speed = 6f;
+    public int layerMask = ~(1 << 8);
+
+    public Entity(type entityType)
     {
         go = new GameObject();
-        go.name = entityName;
         SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-        sr.sprite = Resources.Load<Sprite>(spriteFile);
-        destination = go.transform.position;
+        dest = pos;
+
+        switch (entityType)
+        {
+            case type.Yaga:
+                go.name = "Yaga";
+                sr.sprite = Resources.Load<Sprite>("Sprites/yaga");
+                go.layer = 8;
+                move = false;
+                break;
+
+            case type.WallH:
+                go.name = "Wall";
+                sr.sprite = Resources.Load<Sprite>("Sprites/wall01");
+                move = false;
+                break;
+
+            case type.WallV:
+                go.name = "Wall";
+                sr.sprite = Resources.Load<Sprite>("Sprites/wall02");
+                move = false;
+                break;
+        }
+        go.AddComponent<BoxCollider2D>();
     }
 }
