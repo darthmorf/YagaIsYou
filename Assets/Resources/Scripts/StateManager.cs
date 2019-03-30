@@ -26,6 +26,7 @@ public class StateManager : MonoBehaviour {
         gameObjs.Add(initObj(objType.WallV, new Vector2(2.4f, 2.4f)));
         gameObjs.Add(initObj(objType.WallV, new Vector2(0f, -0.8f)));
         gameObjs.Add(initObj(objType.WallH, new Vector2(0f, -1.6f)));
+
         gameObjs.Add(initObj(objType.Rock,  new Vector2(-2.4f, 0)));
         gameObjs.Add(initObj(objType.Rock,  new Vector2(-4.0f, 0)));
     }
@@ -33,12 +34,13 @@ public class StateManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        Movement();	
+        direction touchDirection = TouchControls();
+        Movement(touchDirection);
 	}
 
-    void Movement ()
-    {        
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+    void Movement (direction touchDirection)
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow) || touchDirection == direction.up)
         {
             List<GameObject> movedObjs = isMoveValid(playerProp.pos, new Vector2(0, 1), squareSize);
             if (movedObjs != null)
@@ -51,7 +53,7 @@ public class StateManager : MonoBehaviour {
                 }
             }
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || touchDirection == direction.down)
         {
             List<GameObject> movedObjs = isMoveValid(playerProp.pos, new Vector2(0, -1), squareSize);
             if (movedObjs != null)
@@ -64,7 +66,7 @@ public class StateManager : MonoBehaviour {
                 }
             }
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || touchDirection == direction.right)
         {
             List<GameObject> movedObjs = isMoveValid(playerProp.pos, new Vector2(1, 0), squareSize);
             if (movedObjs != null)
@@ -77,7 +79,7 @@ public class StateManager : MonoBehaviour {
                 }
             }
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || touchDirection == direction.left)
         {
             List<GameObject> movedObjs = isMoveValid(playerProp.pos, new Vector2(-1, 0), squareSize);
             if (movedObjs != null)
@@ -96,6 +98,67 @@ public class StateManager : MonoBehaviour {
             Properties props = go.GetComponent<Properties>();
             props.pos = Vector2.Lerp(props.pos, props.dest, props.speed * Time.deltaTime);
         }
+    }
+
+    bool swiping = false;
+    bool eventSent = false;
+    Vector2 lastPosition;
+    enum direction { up, down, left, right, none };
+
+    direction TouchControls()
+    {
+        if (Input.touchCount == 0) return direction.none;
+
+        if (Input.GetTouch(0).deltaPosition.sqrMagnitude != 0)
+        {
+            if (swiping == false)
+            {
+                swiping = true;
+                lastPosition = Input.GetTouch(0).position;
+                return direction.none;
+            }
+            else
+            {
+                if (!eventSent)
+                {
+                    Vector2 direction_ = Input.GetTouch(0).position - lastPosition;
+
+                    if (Mathf.Abs(direction_.x) > Mathf.Abs(direction_.y))
+                    {
+                        if (direction_.x > 0)
+                        {
+                            eventSent = true;
+                            return direction.right;
+                        }
+                        else
+                        {
+                            eventSent = true;
+                            return direction.left;
+                        }
+                    }
+                    else
+                    {
+                        if (direction_.y > 0)
+                        {
+                            eventSent = true;
+                            return direction.up;
+                        }
+
+                        else
+                        {
+                            eventSent = true;
+                            return direction.down;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            swiping = false;
+            eventSent = false;
+        }
+        return direction.none;
     }
 
     public enum objType
