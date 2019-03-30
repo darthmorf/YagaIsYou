@@ -11,5 +11,5 @@ public class Properties : MonoBehaviour {
     public float destY { get { return dest.y; } set { dest = new Vector2(dest.x, value); } }
     public Vector2 pos { get { return go.transform.position; } set { go.transform.position = value; } }
     public float speed = 6f;
-    public int layerMask = ~(1 << 8);
+    //public int layerMask {  get { return ~(1 << go.layer); } }
 }
