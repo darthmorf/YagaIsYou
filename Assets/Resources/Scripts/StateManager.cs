@@ -5,29 +5,27 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour {
 
-    public Entity player = null;
+    public GameObject player;
+    public Properties playerProp;
+    public List<GameObject> gameObjs = new List<GameObject>();
     
     float squareSize = 0.8f;
 
     // Use this for initialization
     void Start ()
     {
-        player = new Entity(Entity.type.Yaga);
+        player = initObj(objType.Yaga, new Vector2(0, 0));
+        playerProp = player.GetComponent<Properties>();
+        gameObjs.Add(player);
 
-        Entity wall1 = new Entity(Entity.type.WallH);
-        wall1.pos = new Vector2(0, 0.8f);
-        Entity wall2 = new Entity(Entity.type.WallH);
-        wall2.pos = new Vector2(0.8f, 0.8f);
-        Entity wall3 = new Entity(Entity.type.WallH);
-        wall3.pos = new Vector2(2.4f, 0.8f);
-        Entity wall4 = new Entity(Entity.type.WallV);
-        wall4.pos = new Vector2(2.4f, 1.6f);
-        Entity wall5 = new Entity(Entity.type.WallV);
-        wall5.pos = new Vector2(2.4f, 2.4f);
-        Entity wall6 = new Entity(Entity.type.WallV);
-        wall6.pos = new Vector2(0f, -0.8f);
-        Entity wall7 = new Entity(Entity.type.WallH);
-        wall7.pos = new Vector2(0f, -1.6f);
+        gameObjs.Add(initObj(objType.WallH, new Vector2(0, 0.8f)));
+        gameObjs.Add(initObj(objType.WallH, new Vector2(0.8f, 0.8f)));
+        gameObjs.Add(initObj(objType.WallH, new Vector2(2.4f, 0.8f)));
+        gameObjs.Add(initObj(objType.WallV, new Vector2(2.4f, 1.6f)));
+        gameObjs.Add(initObj(objType.WallV, new Vector2(2.4f, 2.4f)));
+        gameObjs.Add(initObj(objType.WallV, new Vector2(0f, -0.8f)));
+        gameObjs.Add(initObj(objType.WallH, new Vector2(0f, -1.6f)));
+        gameObjs.Add(initObj(objType.Rock, new Vector2(-2.4f, 0)));
     }
 	
 	// Update is called once per frame
@@ -40,37 +38,119 @@ public class StateManager : MonoBehaviour {
     {        
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            RaycastHit2D hit = Physics2D.Raycast(player.pos, new Vector2(0, 1), 0.8f, player.layerMask);
-            if (hit.collider == null)
+            RaycastHit2D hit = Physics2D.Raycast(playerProp.pos, new Vector2(0, 1), 0.8f, playerProp.layerMask);
+            if (hit.collider == null || hit.collider.gameObject.layer != 9)
             {
-                player.dest.y += squareSize;
+                playerProp.dest.y += squareSize;
+            }
+
+            if (hit.collider != null && hit.collider.gameObject.layer == 10)
+            {
+                Properties pushProps = hit.collider.gameObject.GetComponent<Properties>();
+                Vector2 pushPos = pushProps.dest;
+                pushPos.y += squareSize;
+                pushProps.dest = pushPos;
             }
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            RaycastHit2D hit = Physics2D.Raycast(player.pos, new Vector2(0, -1), 0.8f, player.layerMask);
-            if (hit.collider == null)
+            RaycastHit2D hit = Physics2D.Raycast(playerProp.pos, new Vector2(0, -1), 0.8f, playerProp.layerMask);
+            if (hit.collider == null || hit.collider.gameObject.layer != 9)
             {
-                player.dest.y -= squareSize;
+                playerProp.dest.y -= squareSize;
+            }
+
+            if (hit.collider != null && hit.collider.gameObject.layer == 10)
+            {
+                Properties pushProps = hit.collider.gameObject.GetComponent<Properties>();
+                Vector2 pushPos = pushProps.dest;
+                pushPos.y -= squareSize;
+                pushProps.dest = pushPos;
             }
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            RaycastHit2D hit = Physics2D.Raycast(player.pos, new Vector2(1, 0), 0.8f, player.layerMask);
-            if (hit.collider == null)
+            RaycastHit2D hit = Physics2D.Raycast(playerProp.pos, new Vector2(1, 0), 0.8f, playerProp.layerMask);
+            if (hit.collider == null || hit.collider.gameObject.layer != 9)
             {
-                player.dest.x += squareSize;
+                playerProp.dest.x += squareSize;
+            }
+
+            if (hit.collider != null && hit.collider.gameObject.layer == 10)
+            {
+                Properties pushProps = hit.collider.gameObject.GetComponent<Properties>();
+                Vector2 pushPos = pushProps.dest;
+                pushPos.x += squareSize;
+                pushProps.dest = pushPos;
             }
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            RaycastHit2D hit = Physics2D.Raycast(player.pos, new Vector2(-1, 0), 0.8f, player.layerMask);
-            if (hit.collider == null)
+            RaycastHit2D hit = Physics2D.Raycast(playerProp.pos, new Vector2(-1, 0), 0.8f, playerProp.layerMask);
+            if (hit.collider == null || hit.collider.gameObject.layer != 9)
             {
-                player.dest.x -= squareSize;
+                playerProp.dest.x -= squareSize;
+            }
+
+            if (hit.collider != null && hit.collider.gameObject.layer == 10)
+            {
+                Properties pushProps = hit.collider.gameObject.GetComponent<Properties>();
+                Vector2 pushPos = pushProps.dest;
+                pushPos.x -= squareSize;
+                pushProps.dest = pushPos;
             }
         }
 
-        player.go.transform.position = Vector2.Lerp(player.pos, player.dest, player.speed * Time.deltaTime);
+        foreach (GameObject go in gameObjs)
+        {
+            Properties props = go.GetComponent<Properties>();
+            props.pos = Vector2.Lerp(props.pos, props.dest, props.speed * Time.deltaTime);
+        }
+    }
+
+    public enum objType
+    {
+        Yaga, WallH, WallV, Rock
+    };
+
+    GameObject initObj(objType entityType, Vector2 position)
+    {
+        GameObject go = new GameObject();
+        Properties prop = go.AddComponent<Properties>();
+        prop.go = go;
+        prop.pos = position;
+        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
+        prop.dest = prop.pos;
+
+        switch (entityType)
+        {
+            case objType.Yaga:
+                go.name = "Yaga";
+                sr.sprite = Resources.Load<Sprite>("Sprites/yaga");
+                go.layer = 8;
+                break;
+
+            case objType.WallH:
+                go.name = "Wall";
+                sr.sprite = Resources.Load<Sprite>("Sprites/wall01");
+                go.layer = 9;
+                break;
+
+            case objType.WallV:
+                go.name = "Wall";
+                sr.sprite = Resources.Load<Sprite>("Sprites/wall02");
+                go.layer = 9;
+                break;
+
+            case objType.Rock:
+                go.name = "Rock";
+                sr.sprite = Resources.Load<Sprite>("Sprites/rock");
+                go.layer = 10;
+                prop.push = true;
+                break;
+        }
+        go.AddComponent<BoxCollider2D>();
+
+        return go;
     }
 }
