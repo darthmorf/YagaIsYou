@@ -38,66 +38,38 @@ public class StateManager : MonoBehaviour {
     {        
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            RaycastHit2D hit = Physics2D.Raycast(playerProp.pos, new Vector2(0, 1), 0.8f, playerProp.layerMask);
-            if (hit.collider == null || hit.collider.gameObject.layer != 9)
+            List<GameObject> movedObjs = isMoveValid(new Vector2(0, 1), squareSize);
+            foreach (GameObject movedObj in movedObjs)
             {
-                playerProp.dest.y += squareSize;
-            }
-
-            if (hit.collider != null && hit.collider.gameObject.layer == 10)
-            {
-                Properties pushProps = hit.collider.gameObject.GetComponent<Properties>();
-                Vector2 pushPos = pushProps.dest;
-                pushPos.y += squareSize;
-                pushProps.dest = pushPos;
-            }
+                Properties prop = movedObj.GetComponent<Properties>();
+                prop.destY += squareSize;
+            }            
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            RaycastHit2D hit = Physics2D.Raycast(playerProp.pos, new Vector2(0, -1), 0.8f, playerProp.layerMask);
-            if (hit.collider == null || hit.collider.gameObject.layer != 9)
+            List<GameObject> movedObjs = isMoveValid(new Vector2(0, -1), squareSize);
+            foreach (GameObject movedObj in movedObjs)
             {
-                playerProp.dest.y -= squareSize;
-            }
-
-            if (hit.collider != null && hit.collider.gameObject.layer == 10)
-            {
-                Properties pushProps = hit.collider.gameObject.GetComponent<Properties>();
-                Vector2 pushPos = pushProps.dest;
-                pushPos.y -= squareSize;
-                pushProps.dest = pushPos;
+                Properties prop = movedObj.GetComponent<Properties>();
+                prop.destY -= squareSize;
             }
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            RaycastHit2D hit = Physics2D.Raycast(playerProp.pos, new Vector2(1, 0), 0.8f, playerProp.layerMask);
-            if (hit.collider == null || hit.collider.gameObject.layer != 9)
+            List<GameObject> movedObjs = isMoveValid(new Vector2(1, 0), squareSize);
+            foreach (GameObject movedObj in movedObjs)
             {
-                playerProp.dest.x += squareSize;
-            }
-
-            if (hit.collider != null && hit.collider.gameObject.layer == 10)
-            {
-                Properties pushProps = hit.collider.gameObject.GetComponent<Properties>();
-                Vector2 pushPos = pushProps.dest;
-                pushPos.x += squareSize;
-                pushProps.dest = pushPos;
+                Properties prop = movedObj.GetComponent<Properties>();
+                prop.destX += squareSize;
             }
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            RaycastHit2D hit = Physics2D.Raycast(playerProp.pos, new Vector2(-1, 0), 0.8f, playerProp.layerMask);
-            if (hit.collider == null || hit.collider.gameObject.layer != 9)
+            List<GameObject> movedObjs = isMoveValid(new Vector2(-1, 0), squareSize);
+            foreach (GameObject movedObj in movedObjs)
             {
-                playerProp.dest.x -= squareSize;
-            }
-
-            if (hit.collider != null && hit.collider.gameObject.layer == 10)
-            {
-                Properties pushProps = hit.collider.gameObject.GetComponent<Properties>();
-                Vector2 pushPos = pushProps.dest;
-                pushPos.x -= squareSize;
-                pushProps.dest = pushPos;
+                Properties prop = movedObj.GetComponent<Properties>();
+                prop.destX -= squareSize;
             }
         }
 
@@ -152,5 +124,22 @@ public class StateManager : MonoBehaviour {
         go.AddComponent<BoxCollider2D>();
 
         return go;
+    }
+
+    List<GameObject> isMoveValid (Vector2 direction, float distance)
+    {
+        List<GameObject> movedObjs = new List<GameObject>();
+        RaycastHit2D hit = Physics2D.Raycast(playerProp.pos, direction, distance, playerProp.layerMask);
+        if (hit.collider == null || hit.collider.gameObject.layer != 9)
+        {
+            movedObjs.Add(player);
+        }
+
+        if (hit.collider != null && hit.collider.gameObject.layer == 10)
+        {
+            movedObjs.Add(hit.collider.gameObject);
+        }
+
+        return movedObjs;
     }
 }
