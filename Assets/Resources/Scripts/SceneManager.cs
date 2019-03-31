@@ -30,10 +30,12 @@ public class SceneManager : MonoBehaviour {
         gameObjs.Add(initObj(objType.Rock,  new Vector2(-4.0f, 0)));
 
         gameObjs.Add(initObj(objType.RockType, new Vector2(-5.6f, 3.2f)));
-        gameObjs.Add(initObj(objType.WallType, new Vector2(-5.6f, 2.4f)));
         gameObjs.Add(initObj(objType.IsSetter, new Vector2(-4.8f, 3.2f)));
         gameObjs.Add(initObj(objType.PushRule, new Vector2(-4.0f, 3.2f)));
-        gameObjs.Add(initObj(objType.StopRule, new Vector2(-4.0f, 2.4f)));
+
+        gameObjs.Add(initObj(objType.WallType, new Vector2(-5.6f, 1.6f)));
+        gameObjs.Add(initObj(objType.IsSetter, new Vector2(-4.8f, 1.6f)));
+        gameObjs.Add(initObj(objType.StopRule, new Vector2(-4.0f, 1.6f)));
     }
 	
 	// Update is called once per frame
