@@ -21,6 +21,16 @@ public class StateManager : MonoBehaviour {
         RaycastHit2D[] objHit = Physics2D.RaycastAll(props.pos, new Vector2(-1, 0), squareSize);
         List<GameObject> allObjs = GameObject.Find("SceneManager").GetComponent<SceneManager>().gameObjs;
 
+        if (lastEffectingType != null)
+        {
+            List<GameObject> effectedObjs = GetObjsOfType(allObjs, lastEffectingType);
+            foreach (GameObject go in effectedObjs)
+            {
+                go.layer = 13;
+            }
+            lastEffectingType = objType.None;
+        }
+
         if (ruleHit.Length > 1 && objHit.Length > 1)
         {
             GameObject rule = ruleHit[1].collider.gameObject;
@@ -36,6 +46,10 @@ public class StateManager : MonoBehaviour {
                     case objType.RockType:
                         typeToSet = objType.Rock;
                         break;
+
+                    case objType.WallType:
+                        typeToSet = objType.Wall;
+                        break;
                 }
                 List<GameObject> effectedObjs = GetObjsOfType(allObjs, typeToSet);
                 foreach (GameObject go in effectedObjs)
@@ -44,15 +58,6 @@ public class StateManager : MonoBehaviour {
                 }
                 lastEffectingType = typeToSet;
             }
-        }
-        else
-        {
-            List<GameObject> effectedObjs = GetObjsOfType(allObjs, lastEffectingType);
-            foreach (GameObject go in effectedObjs)
-            {
-                go.layer = 13;
-            }
-            lastEffectingType = objType.None;
         }
     }
 }

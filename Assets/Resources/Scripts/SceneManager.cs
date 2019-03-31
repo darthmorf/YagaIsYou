@@ -18,18 +18,19 @@ public class SceneManager : MonoBehaviour {
         playerProp = player.GetComponent<Properties>();
         gameObjs.Add(player);
 
-        gameObjs.Add(initObj(objType.WallH, new Vector2(0, 0.8f)));
-        gameObjs.Add(initObj(objType.WallH, new Vector2(0.8f, 0.8f)));
-        gameObjs.Add(initObj(objType.WallH, new Vector2(2.4f, 0.8f)));
-        gameObjs.Add(initObj(objType.WallV, new Vector2(2.4f, 1.6f)));
-        gameObjs.Add(initObj(objType.WallV, new Vector2(2.4f, 2.4f)));
-        gameObjs.Add(initObj(objType.WallV, new Vector2(0f, -0.8f)));
-        gameObjs.Add(initObj(objType.WallH, new Vector2(0f, -1.6f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector2(0, 0.8f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector2(0.8f, 0.8f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector2(2.4f, 0.8f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector2(2.4f, 1.6f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector2(2.4f, 2.4f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector2(0f, -0.8f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector2(0f, -1.6f)));
 
         gameObjs.Add(initObj(objType.Rock,  new Vector2(-2.4f, 0)));
         gameObjs.Add(initObj(objType.Rock,  new Vector2(-4.0f, 0)));
 
         gameObjs.Add(initObj(objType.RockType, new Vector2(-5.6f, 3.2f)));
+        gameObjs.Add(initObj(objType.WallType, new Vector2(-5.6f, 2.4f)));
         gameObjs.Add(initObj(objType.IsSetter, new Vector2(-4.8f, 3.2f)));
         gameObjs.Add(initObj(objType.PushRule, new Vector2(-4.0f, 3.2f)));
     }
@@ -183,15 +184,9 @@ public class SceneManager : MonoBehaviour {
                 go.layer = 8;
                 break;
 
-            case objType.WallH:
+            case objType.Wall:
                 go.name = "Wall";
                 sr.sprite = Resources.Load<Sprite>("Sprites/wall01");
-                go.layer = 9;
-                break;
-
-            case objType.WallV:
-                go.name = "Wall";
-                sr.sprite = Resources.Load<Sprite>("Sprites/wall02");
                 go.layer = 9;
                 break;
 
@@ -203,6 +198,12 @@ public class SceneManager : MonoBehaviour {
             case objType.RockType:
                 go.name = "RockType";
                 sr.sprite = Resources.Load<Sprite>("Sprites/rules/rock");
+                go.layer = 14;
+                break;
+
+            case objType.WallType:
+                go.name = "WallType";
+                sr.sprite = Resources.Load<Sprite>("Sprites/rules/wall");
                 go.layer = 14;
                 break;
 
