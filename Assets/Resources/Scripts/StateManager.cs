@@ -38,26 +38,36 @@ public class StateManager : MonoBehaviour {
             Properties ruleProp = rule.GetComponent<Properties>();
             Properties objProp  = obj.GetComponent<Properties>();
 
-            if (ruleProp.type == objType.PushRule)
-            {
-                objType typeToSet = objType.None;
-                switch (objProp.type)
-                {
-                    case objType.RockType:
-                        typeToSet = objType.Rock;
-                        break;
+            int layer = 0;
 
-                    case objType.WallType:
-                        typeToSet = objType.Wall;
-                        break;
-                }
-                List<GameObject> effectedObjs = GetObjsOfType(allObjs, typeToSet);
-                foreach (GameObject go in effectedObjs)
-                {
-                    go.layer = 10;
-                }
-                lastEffectingType = typeToSet;
+             switch (ruleProp.type)
+            {
+                case objType.StopRule:
+                    layer = 9;
+                    break;
+
+                case objType.PushRule:
+                    layer = 10;
+                    break;
             }
+
+            objType typeToSet = objType.None;
+            switch (objProp.type)
+            {
+                case objType.RockType:
+                    typeToSet = objType.Rock;
+                    break;
+
+                case objType.WallType:
+                    typeToSet = objType.Wall;
+                    break;
+            }
+            List<GameObject> effectedObjs = GetObjsOfType(allObjs, typeToSet);
+            foreach (GameObject go in effectedObjs)
+            {
+                go.layer = layer;
+            }
+            lastEffectingType = typeToSet;
         }
     }
 }

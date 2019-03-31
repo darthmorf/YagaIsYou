@@ -33,6 +33,7 @@ public class SceneManager : MonoBehaviour {
         gameObjs.Add(initObj(objType.WallType, new Vector2(-5.6f, 2.4f)));
         gameObjs.Add(initObj(objType.IsSetter, new Vector2(-4.8f, 3.2f)));
         gameObjs.Add(initObj(objType.PushRule, new Vector2(-4.0f, 3.2f)));
+        gameObjs.Add(initObj(objType.StopRule, new Vector2(-4.0f, 2.4f)));
     }
 	
 	// Update is called once per frame
@@ -187,7 +188,6 @@ public class SceneManager : MonoBehaviour {
             case objType.Wall:
                 go.name = "Wall";
                 sr.sprite = Resources.Load<Sprite>("Sprites/wall01");
-                go.layer = 9;
                 break;
 
             case objType.Rock:
@@ -218,6 +218,12 @@ public class SceneManager : MonoBehaviour {
             case objType.PushRule:
                 go.name = "PushRule";
                 sr.sprite = Resources.Load<Sprite>("Sprites/rules/push");
+                go.layer = 14;
+                break;
+
+            case objType.StopRule:
+                go.name = "StopRule";
+                sr.sprite = Resources.Load<Sprite>("Sprites/rules/stop");
                 go.layer = 14;
                 break;
         }

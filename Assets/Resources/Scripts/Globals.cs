@@ -11,7 +11,7 @@ namespace Global
         public const float squareSize = 0.8f;
         public enum objType
         {
-            Yaga, Wall, Rock, RockType, WallType, IsSetter, PushRule, None
+            Yaga, Wall, Rock, RockType, WallType, IsSetter, PushRule, StopRule, None
         };
 
         public static List<GameObject> GetObjsOfType(List<GameObject> objects, objType type)
