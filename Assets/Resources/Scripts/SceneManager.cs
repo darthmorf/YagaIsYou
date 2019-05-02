@@ -29,11 +29,11 @@ public class SceneManager : MonoBehaviour {
         gameObjs.Add(initObj(objType.Rock,  new Vector3(-2.4f, 0)));
         gameObjs.Add(initObj(objType.Rock,  new Vector3(-4.0f, 0)));
 
-        gameObjs.Add(initObj(objType.RockType, new Vector3(-5.6f, 3.2f)));
+        gameObjs.Add(initObj(objType.RockRule, new Vector3(-5.6f, 3.2f)));
         gameObjs.Add(initObj(objType.IsSetter, new Vector3(-4.8f, 3.2f)));
         gameObjs.Add(initObj(objType.PushRule, new Vector3(-4.0f, 3.2f)));
 
-        gameObjs.Add(initObj(objType.WallType, new Vector3(-5.6f, 1.6f)));
+        gameObjs.Add(initObj(objType.WallRule, new Vector3(-5.6f, 1.6f)));
         gameObjs.Add(initObj(objType.IsSetter, new Vector3(-4.8f, 1.6f)));
         gameObjs.Add(initObj(objType.StopRule, new Vector3(-4.0f, 1.6f)));
     }
@@ -199,14 +199,14 @@ public class SceneManager : MonoBehaviour {
                 sr.sprite = Resources.Load<Sprite>("Sprites/rock");
                 break;
 
-            case objType.RockType:
-                go.name = "RockType";
+            case objType.RockRule:
+                go.name = "RockRule";
                 sr.sprite = Resources.Load<Sprite>("Sprites/rules/rock");
                 go.layer = 14;
                 break;
 
-            case objType.WallType:
-                go.name = "WallType";
+            case objType.WallRule:
+                go.name = "WallRule";
                 sr.sprite = Resources.Load<Sprite>("Sprites/rules/wall");
                 go.layer = 14;
                 break;

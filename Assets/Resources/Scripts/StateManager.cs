@@ -59,11 +59,11 @@ public class StateManager : MonoBehaviour {
             objType typeToSet = objType.None;
             switch (objProp.type)
             {
-                case objType.RockType:
+                case objType.RockRule:
                     typeToSet = objType.Rock;
                     break;
 
-                case objType.WallType:
+                case objType.WallRule:
                     typeToSet = objType.Wall;
                     break;
             }
