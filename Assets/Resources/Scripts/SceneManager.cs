@@ -11,9 +11,9 @@ public class SceneManager : MonoBehaviour {
     public Properties playerProp;
     public List<GameObject> gameObjs = new List<GameObject>();
 
-    // Use this for initialization
     void Start ()
     {
+        // TODO: actually load maps instead of hardcoding a layout
         player = initObj(objType.Yaga, new Vector3(0, 0, -1));
         playerProp = player.GetComponent<Properties>();
         gameObjs.Add(player);
@@ -38,7 +38,6 @@ public class SceneManager : MonoBehaviour {
         gameObjs.Add(initObj(objType.StopRule, new Vector3(-4.0f, 1.6f)));
     }
 	
-	// Update is called once per frame
 	void Update ()
     {
         direction touchDirection = TouchControls();
@@ -184,7 +183,7 @@ public class SceneManager : MonoBehaviour {
             case objType.Yaga:
                 go.name = "Yaga";
                 sr.sprite = Resources.Load<Sprite>("Sprites/yaga");
-                go.layer = 8;
+                go.layer = layers.player;
                 break;
 
             case objType.Wall:
@@ -202,13 +201,13 @@ public class SceneManager : MonoBehaviour {
             case objType.RockRule:
                 go.name = "RockRule";
                 sr.sprite = Resources.Load<Sprite>("Sprites/rules/rock");
-                go.layer = 14;
+                go.layer = layers.rule;
                 break;
 
             case objType.WallRule:
                 go.name = "WallRule";
                 sr.sprite = Resources.Load<Sprite>("Sprites/rules/wall");
-                go.layer = 14;
+                go.layer = layers.rule;
                 break;
 
             case objType.IsSetter:
@@ -216,19 +215,19 @@ public class SceneManager : MonoBehaviour {
                 sr.sprite = Resources.Load<Sprite>("Sprites/rules/is");
                 StateManager st = go.AddComponent<StateManager>();
                 st.parent = go;
-                go.layer = 14;
+                go.layer = layers.rule;
                 break;
 
             case objType.PushRule:
                 go.name = "PushRule";
                 sr.sprite = Resources.Load<Sprite>("Sprites/rules/push");
-                go.layer = 14;
+                go.layer = layers.rule;
                 break;
 
             case objType.StopRule:
                 go.name = "StopRule";
                 sr.sprite = Resources.Load<Sprite>("Sprites/rules/stop");
-                go.layer = 14;
+                go.layer = layers.rule;
                 break;
         }
         go.AddComponent<BoxCollider2D>();
@@ -241,11 +240,11 @@ public class SceneManager : MonoBehaviour {
         List<GameObject> movedObjs = new List<GameObject>();
         RaycastHit2D[] hit = Physics2D.RaycastAll(start, direction, distance); // hit[0] will be self, so can be ignored
         //Debug.DrawRay(start, direction, Color.red, distance);
-        if (hit.Length > 1 && hit[1].collider.gameObject.layer == 9)
+        if (hit.Length > 1 && hit[1].collider.gameObject.layer == layers.stop)
         {
             return null;
         }
-        else if (hit.Length > 1 && (hit[1].collider.gameObject.layer == 10 || hit[1].collider.gameObject.layer == 14))
+        else if (hit.Length > 1 && (hit[1].collider.gameObject.layer == layers.push || hit[1].collider.gameObject.layer == layers.rule))
         {
             Properties props = hit[1].collider.gameObject.GetComponent<Properties>();
             List<GameObject> pushingObjs = isMoveValid(props.pos, direction, distance);
