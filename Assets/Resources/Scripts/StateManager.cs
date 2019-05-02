@@ -17,8 +17,13 @@ public class StateManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        RaycastHit2D[] ruleHit = Physics2D.RaycastAll(props.pos, new Vector2(1,0), squareSize);
-        RaycastHit2D[] objHit = Physics2D.RaycastAll(props.pos, new Vector2(-1, 0), squareSize);
+        updateLayer();
+    }
+
+    void updateLayer()
+    {
+        RaycastHit2D[] ruleHit = Physics2D.RaycastAll(props.pos, new Vector3(1, 0), squareSize);
+        RaycastHit2D[] objHit = Physics2D.RaycastAll(props.pos, new Vector3(-1, 0), squareSize);
         List<GameObject> allObjs = GameObject.Find("SceneManager").GetComponent<SceneManager>().gameObjs;
 
         if (lastEffectingType != null)
@@ -34,13 +39,13 @@ public class StateManager : MonoBehaviour {
         if (ruleHit.Length > 1 && objHit.Length > 1)
         {
             GameObject rule = ruleHit[1].collider.gameObject;
-            GameObject obj  = objHit[1].collider.gameObject;
+            GameObject obj = objHit[1].collider.gameObject;
             Properties ruleProp = rule.GetComponent<Properties>();
-            Properties objProp  = obj.GetComponent<Properties>();
+            Properties objProp = obj.GetComponent<Properties>();
 
             int layer = 0;
 
-             switch (ruleProp.type)
+            switch (ruleProp.type)
             {
                 case objType.StopRule:
                     layer = 9;

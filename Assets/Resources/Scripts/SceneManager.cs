@@ -14,28 +14,28 @@ public class SceneManager : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        player = initObj(objType.Yaga, new Vector2(0, 0));
+        player = initObj(objType.Yaga, new Vector3(0, 0, -1));
         playerProp = player.GetComponent<Properties>();
         gameObjs.Add(player);
 
-        gameObjs.Add(initObj(objType.Wall, new Vector2(0, 0.8f)));
-        gameObjs.Add(initObj(objType.Wall, new Vector2(0.8f, 0.8f)));
-        gameObjs.Add(initObj(objType.Wall, new Vector2(2.4f, 0.8f)));
-        gameObjs.Add(initObj(objType.Wall, new Vector2(2.4f, 1.6f)));
-        gameObjs.Add(initObj(objType.Wall, new Vector2(2.4f, 2.4f)));
-        gameObjs.Add(initObj(objType.Wall, new Vector2(0f, -0.8f)));
-        gameObjs.Add(initObj(objType.Wall, new Vector2(0f, -1.6f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector3(0, 0.8f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector3(0.8f, 0.8f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector3(2.4f, 0.8f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector3(2.4f, 1.6f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector3(2.4f, 2.4f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector3(0f, -0.8f)));
+        gameObjs.Add(initObj(objType.Wall, new Vector3(0f, -1.6f)));
 
-        gameObjs.Add(initObj(objType.Rock,  new Vector2(-2.4f, 0)));
-        gameObjs.Add(initObj(objType.Rock,  new Vector2(-4.0f, 0)));
+        gameObjs.Add(initObj(objType.Rock,  new Vector3(-2.4f, 0)));
+        gameObjs.Add(initObj(objType.Rock,  new Vector3(-4.0f, 0)));
 
-        gameObjs.Add(initObj(objType.RockType, new Vector2(-5.6f, 3.2f)));
-        gameObjs.Add(initObj(objType.IsSetter, new Vector2(-4.8f, 3.2f)));
-        gameObjs.Add(initObj(objType.PushRule, new Vector2(-4.0f, 3.2f)));
+        gameObjs.Add(initObj(objType.RockType, new Vector3(-5.6f, 3.2f)));
+        gameObjs.Add(initObj(objType.IsSetter, new Vector3(-4.8f, 3.2f)));
+        gameObjs.Add(initObj(objType.PushRule, new Vector3(-4.0f, 3.2f)));
 
-        gameObjs.Add(initObj(objType.WallType, new Vector2(-5.6f, 1.6f)));
-        gameObjs.Add(initObj(objType.IsSetter, new Vector2(-4.8f, 1.6f)));
-        gameObjs.Add(initObj(objType.StopRule, new Vector2(-4.0f, 1.6f)));
+        gameObjs.Add(initObj(objType.WallType, new Vector3(-5.6f, 1.6f)));
+        gameObjs.Add(initObj(objType.IsSetter, new Vector3(-4.8f, 1.6f)));
+        gameObjs.Add(initObj(objType.StopRule, new Vector3(-4.0f, 1.6f)));
     }
 	
 	// Update is called once per frame
@@ -49,7 +49,7 @@ public class SceneManager : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.UpArrow) || touchDirection == direction.up)
         {
-            List<GameObject> movedObjs = isMoveValid(playerProp.pos, new Vector2(0, 1), squareSize);
+            List<GameObject> movedObjs = isMoveValid(playerProp.pos, new Vector3(0, 1), squareSize);
             if (movedObjs != null)
             {
                 movedObjs.Add(player);
@@ -62,7 +62,7 @@ public class SceneManager : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow) || touchDirection == direction.down)
         {
-            List<GameObject> movedObjs = isMoveValid(playerProp.pos, new Vector2(0, -1), squareSize);
+            List<GameObject> movedObjs = isMoveValid(playerProp.pos, new Vector3(0, -1), squareSize);
             if (movedObjs != null)
             {
                 movedObjs.Add(player);
@@ -75,7 +75,7 @@ public class SceneManager : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow) || touchDirection == direction.right)
         {
-            List<GameObject> movedObjs = isMoveValid(playerProp.pos, new Vector2(1, 0), squareSize);
+            List<GameObject> movedObjs = isMoveValid(playerProp.pos, new Vector3(1, 0), squareSize);
             if (movedObjs != null)
             {
                 movedObjs.Add(player);
@@ -88,7 +88,7 @@ public class SceneManager : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow) || touchDirection == direction.left)
         {
-            List<GameObject> movedObjs = isMoveValid(playerProp.pos, new Vector2(-1, 0), squareSize);
+            List<GameObject> movedObjs = isMoveValid(playerProp.pos, new Vector3(-1, 0), squareSize);
             if (movedObjs != null)
             {
                 movedObjs.Add(player);
@@ -103,7 +103,7 @@ public class SceneManager : MonoBehaviour {
         foreach (GameObject go in gameObjs)
         {
             Properties props = go.GetComponent<Properties>();
-            props.pos = Vector2.Lerp(props.pos, props.dest, props.speed * Time.deltaTime);
+            props.pos = Vector3.Lerp(props.pos, props.dest, props.speed * Time.deltaTime);
         }
     }
 
@@ -168,7 +168,7 @@ public class SceneManager : MonoBehaviour {
         return direction.none;
     }
 
-    GameObject initObj(objType entityType, Vector2 position)
+    GameObject initObj(objType entityType, Vector3 position)
     {
         GameObject go = new GameObject();
         Properties prop = go.AddComponent<Properties>();
@@ -189,7 +189,9 @@ public class SceneManager : MonoBehaviour {
 
             case objType.Wall:
                 go.name = "Wall";
-                sr.sprite = Resources.Load<Sprite>("Sprites/wall01");
+                sr.sprite = Resources.Load<Sprite>("Sprites/wallTop");
+                SpriteManager sp = go.AddComponent<SpriteManager>();
+                sp.parent = go;
                 break;
 
             case objType.Rock:
@@ -234,7 +236,7 @@ public class SceneManager : MonoBehaviour {
         return go;
     }
 
-    List<GameObject> isMoveValid (Vector2 start, Vector2 direction, float distance)
+    List<GameObject> isMoveValid (Vector3 start, Vector3 direction, float distance)
     {
         List<GameObject> movedObjs = new List<GameObject>();
         RaycastHit2D[] hit = Physics2D.RaycastAll(start, direction, distance); // hit[0] will be self, so can be ignored
