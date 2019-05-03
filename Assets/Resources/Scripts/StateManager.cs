@@ -27,7 +27,7 @@ public class StateManager : MonoBehaviour {
 
         List<GameObject> allObjs = GameObject.Find("SceneManager").GetComponent<SceneManager>().gameObjs;
 
-        // removes all effects from the type we were previously effecing
+        // removes all effects from the type we were previously effecting
         if (lastEffectingType != null)
         {
             List<GameObject> effectedObjs = GetObjsOfType(allObjs, lastEffectingType);

@@ -240,15 +240,19 @@ public class SceneManager : MonoBehaviour {
         List<GameObject> movedObjs = new List<GameObject>();
         RaycastHit2D[] hit = Physics2D.RaycastAll(start, direction, distance); // hit[0] will be self, so can be ignored
         //Debug.DrawRay(start, direction, Color.red, distance);
+
+        // if there is a stop object in the way, move is not valid so return null
         if (hit.Length > 1 && hit[1].collider.gameObject.layer == layers.stop)
         {
             return null;
         }
+        // if there is a pushable object next to the player
         else if (hit.Length > 1 && (hit[1].collider.gameObject.layer == layers.push || hit[1].collider.gameObject.layer == layers.rule))
         {
-            Properties props = hit[1].collider.gameObject.GetComponent<Properties>();
+            // recursivley check if that object is contacting any pushable objects until a free space or a stop object is encountered, then return the list of objects that are being pushed
+            Properties props = hit[1].collider.gameObject.GetComponent<Properties>(); // TODO this should check for the first applicable object not the 2nd one. (ie ignore none layer objects)
             List<GameObject> pushingObjs = isMoveValid(props.pos, direction, distance);
-            if (pushingObjs == null) // Invalid move
+            if (pushingObjs == null) 
             {
                 return null;
             }
